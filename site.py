@@ -1,11 +1,7 @@
 import streamlit as st
-from pathlib import Path
 
-# ✅ set_page_config deve vir logo após os imports
+# ====== CONFIG (sempre no topo) ======
 st.set_page_config(page_title="Pietra 💖", page_icon="💘")
-
-# ====== PATH DA IMAGEM (robusto p/ Cloud e Windows) ======
-IMG = Path(__file__).parent / "assets" / "foto_casal_pietra.jpeg"
 
 # ====== ESTADO ======
 if "step" not in st.session_state:
@@ -36,31 +32,20 @@ st.markdown(
 total_steps = 4
 st.progress(min(st.session_state.step, total_steps) / total_steps)
 
+# ====== IMAGEM (GitHub RAW – definitivo) ======
+IMG_URL = "https://raw.githubusercontent.com/jhjota23/Testes-Dashboards/main/foto_casal_pietra.jpeg"
+
 # ====== ETAPA 0 ======
 if st.session_state.step == 0:
+    st.image(IMG_URL, width=800)
+
     st.title("Pietra!! Boa noite, amor!! 👋")
-    st.markdown('<p style="font-size:24px;">Fiz só esse teste, prometo</p>', unsafe_allow_html=True)
+    st.markdown(
+        '<p style="font-size:24px;">Fiz só esse teste, prometo</p>',
+        unsafe_allow_html=True
+    )
 
-    # ✅ Debug + fallback (pra você enxergar o que tá acontecendo no Cloud)
-    st.caption(f"🖼️ Procurando imagem em: {IMG}")
-    if IMG.exists():
-        # leitura em bytes é ainda mais “blindada” no Cloud
-        st.image(IMG.read_bytes(), width=800)
-    else:
-        st.error("Não encontrei a imagem no deploy.")
-        # lista o que existe na pasta e em assets/ pra diagnosticar rápido
-        try:
-            st.write("Arquivos na pasta do app:", sorted([p.name for p in Path(__file__).parent.iterdir()]))
-        except Exception as e:
-            st.write("Não consegui listar a pasta do app:", e)
-
-        assets_dir = Path(__file__).parent / "assets"
-        if assets_dir.exists():
-            st.write("Arquivos em assets/:", sorted([p.name for p in assets_dir.iterdir()]))
-        else:
-            st.write("A pasta assets/ não existe no deploy.")
-
-    # 🎵 Botão da música (YouTube Music – funciona sempre)
+    # 🎵 Botão da música (YouTube Music)
     st.markdown(
         """
         <a href="https://music.youtube.com/watch?v=mRNcPbCJNJ8" target="_blank" style="text-decoration:none;">
@@ -74,33 +59,29 @@ if st.session_state.step == 0:
                 cursor:pointer;
                 width:100%;
                 margin-bottom:20px;
-                ">
-                ▶️ Pra ouvir enquanto responde
+            ">
+            ▶️ Pra ouvir enquanto responde
             </button>
         </a>
         """,
         unsafe_allow_html=True
     )
 
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button("Começar 😊"):
-            next_step()
-            st.rerun()
-    with col2:
-        st.write("")
+    if st.button("Começar 😊"):
+        next_step()
+        st.rerun()
 
 # ====== ETAPA 1 ======
 elif st.session_state.step == 1:
-    st.markdown('<p style="font-size:22px;"><b>Posso propor algo? 👀</b></p>', unsafe_allow_html=True)
+    st.markdown(
+        '<p style="font-size:22px;"><b>Posso propor algo? 👀</b></p>',
+        unsafe_allow_html=True
+    )
 
-    col1, col2 = st.columns(2)
-
-    with col1:
-        if st.button("Sim, vida!"):
-            st.session_state.resposta1 = "sim"
-            next_step()
-            st.rerun()
+    if st.button("Sim, vida!"):
+        st.session_state.resposta1 = "sim"
+        next_step()
+        st.rerun()
 
     if st.button("⬅️ Voltar"):
         prev_step()
@@ -115,10 +96,6 @@ elif st.session_state.step == 2:
         )
         st.success("😭💖")
         st.balloons()
-    else:
-        st.error("Poxa 😢 (tô dramatizando)")
-        st.snow()
-        st.image("https://pbs.twimg.com/media/FMFEuJVWYAYtq9E.jpg", width=300)
 
     st.markdown(
         '<p style="font-size:22px;"><b>Próxima etapa:</b> Escolhe o nosso próximo passeio 👇</p>',
@@ -161,24 +138,31 @@ elif st.session_state.step == 3:
         titulo = "Passeio gostosinho pelo Centro 🏙️🥖"
         mensagem = "Então fechou: Baguete da Metrópole e a gente conhece uns brechós ruins"
 
-    st.markdown(f'<p style="font-size:26px;"><b>{titulo}</b></p>', unsafe_allow_html=True)
+    st.markdown(
+        f'<p style="font-size:26px;"><b>{titulo}</b></p>',
+        unsafe_allow_html=True
+    )
     st.success(mensagem)
 
     if not st.session_state.bora_clicked:
-        st.markdown('<p style="font-size:20px;">Se é isso mesmo, aperta “Bora!” 👇</p>', unsafe_allow_html=True)
+        st.markdown(
+            '<p style="font-size:20px;">Se é isso mesmo, aperta “Bora!” 👇</p>',
+            unsafe_allow_html=True
+        )
 
-        col1, col2 = st.columns(2)
-        with col1:
-            if st.button("Bora! 🚀"):
-                st.session_state.bora_clicked = True
-                st.rerun()
+        if st.button("Bora! 🚀"):
+            st.session_state.bora_clicked = True
+            st.rerun()
 
-        with col2:
-            if st.button("Quero trocar 😅"):
-                prev_step()
-                st.rerun()
+        if st.button("Quero trocar 😅"):
+            prev_step()
+            st.rerun()
+
     else:
-        st.markdown('<p style="font-size:32px; text-align:center;">Te amo ❤️</p>', unsafe_allow_html=True)
+        st.markdown(
+            '<p style="font-size:32px; text-align:center;">Te amo ❤️</p>',
+            unsafe_allow_html=True
+        )
 
         if st.button("Continuar 😊"):
             st.session_state.bora_clicked = False
@@ -189,12 +173,9 @@ elif st.session_state.step == 3:
 else:
     st.success("Prontinho 😎💘 Formulário finalizado!")
     st.write("Resumo:")
-    st.write("- Resposta 1:", st.session_state.get("resposta1"))
+    st.write("- Resposta:", st.session_state.get("resposta1"))
     st.write("- Rolê:", st.session_state.get("role"))
 
     if st.button("🔁 Recomeçar"):
-        st.session_state.step = 0
-        for k in ["resposta1", "role", "bora_clicked"]:
-            if k in st.session_state:
-                del st.session_state[k]
+        st.session_state.clear()
         st.rerun()
