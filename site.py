@@ -38,7 +38,7 @@ IMG_URL = "https://raw.githubusercontent.com/jhjota23/Testes-Dashboards/main/fot
 # ====== ETAPA 0 ======
 if st.session_state.step == 0:
 
-    st.title("Pietra!! Boa noite, amor!! 👋")
+    st.title("Pietra.. Boa noite, amor!! 👋")
     st.markdown(
         '<p style="font-size:24px;">Fiz só esse teste, prometo</p>',
         unsafe_allow_html=True
@@ -178,4 +178,5 @@ else:
     if st.button("🔁 Recomeçar"):
         st.session_state.clear()
         st.rerun()
+
 
