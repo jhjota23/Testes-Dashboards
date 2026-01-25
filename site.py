@@ -1,4 +1,7 @@
 import streamlit as st
+from pathlib import Path
+
+IMG = Path(__file__).parent / "assets" / "foto_casal_pietra.jpeg"
 
 st.set_page_config(page_title="Pietra 💖", page_icon="💘")
 
@@ -38,7 +41,7 @@ if st.session_state.step == 0:
         '<p style="font-size:24px;">Fiz só esse teste, prometo</p>',
         unsafe_allow_html=True
     )
-    st.image("foto_casal_pietra.jpeg", width=800)
+    st.image(str(IMG), width=800)
 
     # 🎵 Botão da música (YouTube – funciona sempre)
     st.markdown(
