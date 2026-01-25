@@ -37,14 +37,13 @@ IMG_URL = "https://raw.githubusercontent.com/jhjota23/Testes-Dashboards/main/fot
 
 # ====== ETAPA 0 ======
 if st.session_state.step == 0:
-    st.image(IMG_URL, width=800)
 
     st.title("Pietra!! Boa noite, amor!! 👋")
     st.markdown(
         '<p style="font-size:24px;">Fiz só esse teste, prometo</p>',
         unsafe_allow_html=True
     )
-
+    st.image(IMG_URL, width=800)
     # 🎵 Botão da música (YouTube Music)
     st.markdown(
         """
@@ -179,3 +178,4 @@ else:
     if st.button("🔁 Recomeçar"):
         st.session_state.clear()
         st.rerun()
+
