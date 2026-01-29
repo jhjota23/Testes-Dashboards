@@ -9,7 +9,9 @@ st.set_page_config(layout="wide")
 # ====== ARQUIVOS ======
 base = Path(__file__).parent
 xlsx = base / "resumo_receita_liquida.xlsx"
-logo_url = "https://raw.githubusercontent.com/jhjota23/Testes-Dashboards/main/assets/bmw.png"
+
+logo_bmw = base / "bmw.png"
+logo_url = "https://raw.githubusercontent.com/jhjota23/Testes-Dashboards/main/bmw.png"
 
 with left:
     if logo_bmw.exists():
@@ -256,5 +258,6 @@ with g2:
         yaxis=dict(title="", showgrid=False, zeroline=False),
     )
     st.plotly_chart(fig2, use_container_width=True)
+
 
 
