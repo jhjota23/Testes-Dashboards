@@ -15,29 +15,38 @@ logo_bmw = base / "bmw.png"
 logo_url = "https://raw.githubusercontent.com/jhjota23/Testes-Dashboards/main/bmw.png"
 
 # ====== HEADER ======
-left, mid, right = st.columns([1.2, 6, 3])
+def render_header():
+    left, mid, right = st.columns([1.2, 6, 3])
 
-with left:
-    if logo_bmw.exists():
-        st.image(str(logo_bmw), width=120)
+    with left:
+        if logo_bmw.exists():
+            st.image(str(logo_bmw), width=120)
+        else:
+            st.image(logo_url, width=120)
 
-with mid:
-    st.markdown(
-        """
-        <div style="padding-top:6px;">
-            <div style="font-size:38px; font-weight:900; line-height:1;">DDI PÓS VENDAS</div>
-            <div style="font-size:14px; opacity:0.75; margin-top:6px;">Grupo IESA</div>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    with mid:
+        st.markdown(
+            """
+            <div style="padding-top:6px;">
+                <div style="font-size:38px; font-weight:900; line-height:1;">DDI PÓS VENDAS</div>
+                <div style="font-size:14px; opacity:0.75; margin-top:6px;">Grupo IESA</div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
-with right:
-    c1, c2 = st.columns(2)
-    with c1:
-        ano = st.selectbox("ANO", [2025], index=0, disabled=True, key="filtro_ano")
-    with c2:
-        mes = st.selectbox("MÊS", ["Novembro"], index=0, disabled=True, key="filtro_mes")
+    with right:
+        c1, c2 = st.columns(2)
+        with c1:
+            st.selectbox("ANO", [2025], index=0, disabled=True, key="filtro_ano")
+        with c2:
+            st.selectbox("MÊS", ["Novembro"], index=0, disabled=True, key="filtro_mes")
+
+    st.caption("⚠️ Por enquanto este dashboard está carregando apenas 1 mês. Quando tiver histórico, eu ligo os filtros para mudar os dados.")
+    st.divider()
+
+# CHAME APENAS UMA VEZ (logo após definir)
+render_header()
         
 # ====== HELPERS ======
 def br_int(x):
@@ -278,6 +287,7 @@ with g2:
         yaxis=dict(title="", showgrid=False, zeroline=False),
     )
     st.plotly_chart(fig2, use_container_width=True)
+
 
 
 
