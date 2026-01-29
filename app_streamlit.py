@@ -12,7 +12,6 @@ xlsx = base / "resumo_receita_liquida.xlsx"
 
 logo_bmw = base / "bmw.png"
 logo_url = "https://raw.githubusercontent.com/jhjota23/Testes-Dashboards/main/bmw.png"
-
 with left:
     if logo_bmw.exists():
         st.image(str(logo_bmw), width=120)
@@ -258,6 +257,7 @@ with g2:
         yaxis=dict(title="", showgrid=False, zeroline=False),
     )
     st.plotly_chart(fig2, use_container_width=True)
+
 
 
 
