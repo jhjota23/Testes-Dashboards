@@ -37,11 +37,9 @@ with mid:
 with right:
     c1, c2 = st.columns(2)
     with c1:
-        st.selectbox("ANO", [2025], index=0, disabled=True)
+        ano = st.selectbox("ANO", [2025], index=0, disabled=True, key="filtro_ano")
     with c2:
-        st.selectbox("MÊS", ["Novembro"], index=0, disabled=True)
-
-st.divider()
+        mes = st.selectbox("MÊS", ["Novembro"], index=0, disabled=True, key="filtro_mes")
         
 # ====== HELPERS ======
 def br_int(x):
@@ -282,6 +280,7 @@ with g2:
         yaxis=dict(title="", showgrid=False, zeroline=False),
     )
     st.plotly_chart(fig2, use_container_width=True)
+
 
 
 
