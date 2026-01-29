@@ -20,8 +20,6 @@ left, mid, right = st.columns([1.2, 6, 3])
 with left:
     if logo_bmw.exists():
         st.image(str(logo_bmw), width=120)
-    else:
-        st.image(logo_url, width=120)
 
 with mid:
     st.markdown(
@@ -280,6 +278,7 @@ with g2:
         yaxis=dict(title="", showgrid=False, zeroline=False),
     )
     st.plotly_chart(fig2, use_container_width=True)
+
 
 
 
