@@ -10,7 +10,7 @@ st.set_page_config(layout="wide")
 base = Path(__file__).parent
 xlsx = base / "resumo_receita_liquida.xlsx"
 
-# Logo BMW está na raiz do repo (conforme seu print)
+# Logo BMW (no seu repo está na raiz)
 logo_bmw = base / "bmw.png"
 logo_url = "https://raw.githubusercontent.com/jhjota23/Testes-Dashboards/main/bmw.png"
 
@@ -45,9 +45,9 @@ def render_header():
     st.caption("⚠️ Por enquanto este dashboard está carregando apenas 1 mês. Quando tiver histórico, eu ligo os filtros para mudar os dados.")
     st.divider()
 
-# CHAME APENAS UMA VEZ (logo após definir)
+# ✅ CHAMA O HEADER UMA ÚNICA VEZ
 render_header()
-        
+
 # ====== HELPERS ======
 def br_int(x):
     if pd.isna(x):
@@ -60,7 +60,7 @@ def br_pct(x, decimals=0):
     return f"{x:.{decimals}%}".replace(".", ",")
 
 def kpi_cards(items, cols=6):
-    # Ajuste se cortar (pro seu layout atual ficou bem)
+    # Ajuste se cortar
     height = 360
 
     css = f"""
@@ -136,34 +136,6 @@ def kpi_cards(items, cols=6):
 
     components.html(html, height=height, scrolling=False)
 
-# ====== HEADER (logo + título + filtros visuais) ======
-left, mid, right = st.columns([1.2, 6, 3])
-
-with left:
-    if logo_bmw.exists():
-        st.image(str(logo_bmw), width=120)
-
-with mid:
-    st.markdown(
-        """
-        <div style="padding-top:6px;">
-            <div style="font-size:38px; font-weight:900; line-height:1;">DDI PÓS VENDAS</div>
-            <div style="font-size:14px; opacity:0.75; margin-top:6px;">Grupo IESA</div>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-with right:
-    c1, c2 = st.columns(2)
-    with c1:
-        ano = st.selectbox("ANO", [2025], index=0, disabled=True)
-    with c2:
-        mes = st.selectbox("MÊS", ["Novembro"], index=0, disabled=True)
-
-st.caption("⚠️ Por enquanto este dashboard está carregando apenas 1 mês. Quando tiver histórico, eu ligo os filtros para mudar os dados.")
-st.divider()
-
 # ====== LEITURA EXCEL ======
 df = pd.read_excel(xlsx, sheet_name="Resumo", skiprows=1).dropna(axis=1, how="all")
 
@@ -176,16 +148,16 @@ for c in num_cols:
     if c in df.columns:
         df[c] = pd.to_numeric(df[c], errors="coerce")
 
-# % OBJ. (Excel em número normal: 64,56 -> 0,6456)
+# % OBJ. (você deixou como número normal no Excel: 64,56)
 if "% OBJ." in df.columns:
     s = pd.to_numeric(df["% OBJ."], errors="coerce")
-    df["% OBJ."] = ss = s.where(s <= 1, s / 100)
+    df["% OBJ."] = s.where(s <= 1, s / 100)
 
 # ====== LINHA TOTAL ======
 total_row = df.loc[df["LOJA"].astype(str).str.strip().str.lower() == "total"]
 total = total_row.iloc[0] if not total_row.empty else df.iloc[-1]
 
-# ====== CARDS ======
+# ====== CARDS (KPIs) ======
 items = [
     {"value": br_int(total.get("TOTAL")),         "label": "REC. LIQ. TOTAL",     "variant": "light"},
     {"value": br_int(total.get("PEÇAS")),         "label": "REC. LIQ. PEÇAS",     "variant": "light"},
@@ -220,14 +192,14 @@ st.dataframe(
 st.divider()
 
 # ====== GRÁFICOS (abaixo da tabela) ======
-periodo = "Nov 2025"  # depois você liga aos filtros quando tiver histórico
+periodo = "Nov 2025"  # depois liga no filtro quando tiver histórico
 
 rec_pecas = float(total.get("PEÇAS", 0) or 0)
 rec_serv  = float(total.get("SERVIÇO", 0) or 0)
 rec_total = float(total.get("TOTAL", rec_pecas + rec_serv) or (rec_pecas + rec_serv))
 
 cmv = float(total.get("CMV", 0) or 0)
-compras = float(total.get("TRÂN.", 0) or 0)  # ajuste aqui se sua coluna compras for outra
+compras = float(total.get("TRÂN.", 0) or 0)  # ajuste se "compras" for outra coluna
 
 g1, g2 = st.columns(2)
 
@@ -287,15 +259,3 @@ with g2:
         yaxis=dict(title="", showgrid=False, zeroline=False),
     )
     st.plotly_chart(fig2, use_container_width=True)
-
-
-
-
-
-
-
-
-
-
-
-
