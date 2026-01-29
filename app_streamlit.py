@@ -9,8 +9,14 @@ st.set_page_config(layout="wide")
 # ====== ARQUIVOS ======
 base = Path(__file__).parent
 xlsx = base / "resumo_receita_liquida.xlsx"
-logo_bmw = base / "assets" / "bmw.png"  # coloque o logo aqui: assets/bmw.png
+logo_url = "https://raw.githubusercontent.com/SEU_USUARIO/SEU_REPO/main/assets/bmw.png"
 
+with left:
+    if logo_bmw.exists():
+        st.image(str(logo_bmw), width=120)
+    else:
+        st.image(logo_url, width=120)
+        
 # ====== HELPERS ======
 def br_int(x):
     if pd.isna(x):
@@ -250,3 +256,4 @@ with g2:
         yaxis=dict(title="", showgrid=False, zeroline=False),
     )
     st.plotly_chart(fig2, use_container_width=True)
+
